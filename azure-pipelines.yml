@@ -11,13 +11,21 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
-
 steps:
 - task: DotNetCoreCLI@2
   inputs:
     command: 'restore'
     projects: '**/dotnet-angular.csproj'
 
+- task: Npm@1
+  inputs:
+    command: 'install'
+    workingDir: 'ClientApp'
+- task: Npm@1
+  inputs:
+    command: 'custom'
+    workingDir: 'ClientApp'
+    customCommand: 'run build'
 - task: DotNetCoreCLI@2
   inputs:
     command: 'build'
@@ -34,6 +42,7 @@ steps:
   inputs:
     PathtoPublish: '$(build.artifactstagingdirectory)'
   condition: succeededOrFailed()
+
 
 
 
